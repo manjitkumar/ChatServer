@@ -2,9 +2,7 @@
 import java.io.*;
 import java.net.*;
 import java.util.*;
-
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.event.*;
 
@@ -22,6 +20,8 @@ public class RClient {
 	JTextField port = new JTextField(4);
 	String ipad1;
 	int port1;
+	JTextField userNameField;
+	String uName;
 	Thread readerThread;
 	
 	public static void main(String []arg){
@@ -41,6 +41,10 @@ public class RClient {
 		frame.add(BorderLayout.EAST, chatPanel);
 		JLabel ipl = new JLabel("IP address");
 		JLabel portl =  new JLabel("Port Number");
+		JLabel userNameLabel = new JLabel("User Name");
+		userNameField = new JTextField(10);
+		mainPanel.add(userNameLabel);
+		mainPanel.add(userNameField);
 		mainPanel.add(ipl);
 		mainPanel.add(ipad);
 		mainPanel.add(portl);
@@ -67,7 +71,7 @@ public class RClient {
 		
 		connect.addActionListener(new ConnectListener());	
 				
-		frame.setSize(1000,600);
+		frame.setSize(475,600);
 		frame.setVisible(true);
 		
 	}
@@ -79,6 +83,7 @@ public class RClient {
 		public void actionPerformed(ActionEvent arg0) {
 			ipad1 = ipad.getText();
 			port1 = Integer.parseInt(port.getText());
+			uName = userNameField.getText();
 			System.out.println("Establishing a Connection at IP "+ipad1 +" on Port "+ port1);
 			setUpNetworking();
 			readerThread = new Thread(new IncomingReader());
@@ -120,8 +125,8 @@ public class RClient {
 			String msg = outgoing.getText();
 			System.out.println(msg);
 			try{
-				if((msg != "") || (msg != " ") || (msg != "  ")){
-				writer.println(msg);
+				if((msg != null) || (msg != " ") || (msg != "  ")){
+				writer.println(uName+" : "+msg);
 				writer.flush();
 			}
 			else
